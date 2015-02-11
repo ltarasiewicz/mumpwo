@@ -1,0 +1,3 @@
+home_mumpwo_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: HomeMumpwoBundle:Default:index }
