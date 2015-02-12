@@ -39,3 +39,4 @@
 
 # Node modules
 /app/Resources/dev/node_modules/
+/nbproject/

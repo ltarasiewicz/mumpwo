@@ -4,17 +4,6 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
-        sass: {
-            dist: {
-                options: {
-                    style: 'compressed',
-                    noCache: true
-                },
-                files: {
-                    '../../../web/assets/css/bootstrap.css': 'custom-sass/bootstrap.scss',
-                }
-            }
-        },
         watch: {
             options: {
                 livereload: true,
@@ -38,17 +27,17 @@ module.exports = function(grunt) {
             my_target: {
                 files: [{
                     expand: true,
-                    cwd: 'inc/css/',
-                    src: ['bootstrap.css'],
-                    dest: 'inc/css/',
+                    cwd: '../../../web/assets/css/',
+                    src: ['bootstrap.css', 'cover.css'],
+                    dest: '../../../web/assets/css/dist/',
                     ext: '.min.css'
                 }]
             }
         },
         uglify: {
             build: {
-                src: 'inc/js/dev/scripts.js',
-                dest: 'inc/js/scripts.min.js'
+                src: '../../../web/assets/js/scripts.js',
+                dest: '../../../web/assets/js/dist/scripts.min.js'
             }
         },
         uncss: {
@@ -69,19 +58,25 @@ module.exports = function(grunt) {
                     environment: 'development'
                 }
             }
+        },
+        coffee: {
+            compile: {
+                files: {
+                    '../../../web/assets/js/scripts.js': 'coffee/scripts.coffee'
+                }
+            }
         }        
     });
 
     // 3. Where we tell Grunt we plan to use this plug-in.
     grunt.loadNpmTasks('grunt-contrib-compass');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-coffee');
 
 
     // 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
-    grunt.registerTask('default', ['compass', 'watch', 'cssmin', 'uglify']);
-    grunt.registerTask('clean', ['uncss']);
-    grunt.registerTask('comp', ['compass']);
-    grunt.registerTask('sa', ['sass']);
+    grunt.registerTask('default', ['compass', 'cssmin', 'coffee', 'uglify']);
     
-
 };
 
