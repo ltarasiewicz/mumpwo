@@ -11,14 +11,10 @@ namespace Home\MumpwoBundle\Entity;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
-use Home\MumpwoBundle\Entity\Circle;
-
-
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="fos_user")
+ * @ORM\Table(name="fos_users")
  */
 class User extends BaseUser
 {
@@ -31,72 +27,67 @@ class User extends BaseUser
     
     
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * 
-     * @Assert\NotBlank(message="Imię jest wymagane", groups={"Registration", "Profile"})
      * @Assert\Length(
      *      min=2,      
-     *      max="255",
-     *      minMessage="Imię powinno zawierać minimum dwa znaki",
-     *      maxMessage="Imię przekracza dozwoloną długość",
+     *      max="15",
+     *      minMessage="The first name should include at least 2 characters",
+     *      maxMessage="The name should inclue the maximum of 15 characters",
      *      groups={"Registration", "Profile"}
      * )
      */
     protected $firstName;
     
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * 
-     * @Assert\NotBlank(message="Nazwisko jest wymagane", groups={"Registration", "Profile"})
      * @Assert\Length(
      *      min=2,      
-     *      max="255",
-     *      minMessage="Nazwisko powinno zawierać minimum dwa znaki",
-     *      maxMessage="Nazwisko przekracza dozwoloną długość",
+     *      max="15",
+     *      minMessage="The last name should include at least 2 characters",
+     *      maxMessage="The last name should include the maximum of 15 characters",
      *      groups={"Registration", "Profile"}
      * )
      */    
-    protected $lastName;
-    
+    protected $lastName;   
     
     /**
-     * @ORM\Column(type="string", length=255)
-     * 
-     * @Assert\NotBlank(message="Miejsce zamieszkania jest wymagane", groups={"Registration", "Profile"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *     
      * @Assert\Length(
      *      min=2,      
-     *      max="255",
-     *      minMessage="Miejsce zamieszkania powinno zawierać minimum dwa znaki",
-     *      maxMessage="Miejsce zamieszkania przekracza dozwoloną długość",
+     *      max="25",
      *      groups={"Registration", "Profile"}
      * )
      */      
-    protected $location;
+    protected $country;
     
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * 
      * @Assert\Length(
-     *      min=7,      
+     *      min=2,      
      *      max="15",
-     *      minMessage="Miejsce zamieszkania powinno zawierać minimum dwa znaki",
-     *      maxMessage="Miejsce zamieszkania przekracza dozwoloną długość",
      *      groups={"Registration", "Profile"}
      * )
      */      
-    protected $phoneNumber;    
+    protected $city;   
     
     
     /**
-     * @ORM\ManyToMany(targetEntity="Circle", mappedBy="users")
+     * @ORM\ManyToMany(targetEntity="Test")
+     * @ORM\JoinTable(name="users_tests",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="test_id", referencedColumnName="id", unique=true)})
      */
-    protected $circles;
+    protected $tests;
     
+       
     public function __construct()
     {
         parent::__construct();
         
-        $this->circles = new ArrayCollection();
     }
     
     public function getFirstName()
@@ -116,33 +107,28 @@ class User extends BaseUser
     
     public function setLastName($lastName)
     {
-        $this->firstName = $lastName;
-    }    
-    
-    public function getLocation()
+        $this->lastName = $lastName;
+    }          
+     
+    public function getCountry()
     {
-        return $this->location;
+        return $this->country;
     }
     
-    public function setLocation($location)
+    public function setCountry($country)
     {
-        $this->location = $location;
-    }    
+        $this->country = $country;
+    }         
     
-    public function getPhoneNumber()
+    public function getCity()
     {
-        return $this->phoneNumber;
+        return $this->city;
     }
     
-    public function setPhoneNumber($phoneNumber)
+    public function setCity($city)
     {
-        $this->phoneNumber = $phoneNumber;
-    }    
+        $this->city = $city;
+    }      
     
-    public function addCircle(Circle $circle)
-    {        
-        $this->circles[] = $circle;
-        $circle->addUsers($this); // synchronously updating the inverse side
-    }
 }
 

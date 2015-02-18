@@ -78,3 +78,6 @@ fos_user:
     db-driver: orm
     firewall_name: main
     user_class: Home\MumpwoBundle\Entity\User
+    registration:
+        form:
+            type: mumpwo_user_registration
